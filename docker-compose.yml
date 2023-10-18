@@ -12,19 +12,26 @@ services:
     restart: unless-stopped
 
   # Nginx Web Server
+
+
   web:
-    image: nginx:alpine
-    container_name: nginx-server
+    build: 
+      context: ./web
+      dockerfile: Dockerfile.nginx
     ports:
-      - "80:80"
-    volumes:
-      - ./laravel/public:/var/www/public
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - "80:80"   #8001 of the host to 3000 if the container
+    container_name: nginx-server
     depends_on:
       - app
     networks:
       - laravel-net
     restart: unless-stopped
+    volumes:
+      - ./laravel/public:/var/www/public
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+
+ 
 
   # MySQL Database
   db:
